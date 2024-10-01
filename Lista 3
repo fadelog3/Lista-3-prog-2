@@ -1,3 +1,80 @@
+#Questão 1
+class Vector3D(RealVector): #herda de Vector space e de RealVector
+    _dim = 3
+    def __init__(self, coord):
+        if len(coord) != 3:
+            raise ValueError
+        super().__init__(self._dim, coord)
+        self.tolerancia= 4*ep_maquina(1)
+    
+    def __add__(self, other_vector):
+      new_vector=[]
+      for i in range(self._dim):
+        new_vector.append(self.coord[i]+other_vector.coord[i])
+      return Vector3D(new_vector)
+    
+    def __sub__(self, other_vector):
+      new_vector=[]
+      for i in range(self._dim):
+        new_vector.append(self.coord[i]-other_vector.coord[i])
+      return Vector3D(new_vector)
+
+    def __neg__(self):
+      new_neg_vector=[]  
+      for i in range(self._dim):
+        new_neg_vector.append(-1*self.coord[i])
+      return Vector3D(new_neg_vector)  
+
+    def __mul__(self, a):
+      new_vector=[]
+      for i in range(self._dim):
+        new_vector.append(a*self.coord[i])
+      return Vector3D(new_vector) 
+    
+    def __abs__(self): 
+      modulo = 0
+      for i in self.coord:
+        modulo += i**2
+      modulo = modulo**(1/2) 
+      return modulo
+
+    def __eq__(self, other_vector):
+      for i in range(0,3):
+        if self.coord[i]!=other_vector.coord[i]:
+          return False
+      return True
+
+    def __lt__(self, other_vector):
+      return abs(self)<abs(other_vector)-self.tolerancia
+
+    def __gt__(self, other_vector):
+      return abs(self)>abs(other_vector)+self.tolerancia
+    
+    def __le__(self, other_vector):
+      if self.coord==other_vector.coord:
+        return True
+      return abs(self)<abs(other_vector)-self.tolerancia
+
+    def __ge__(self, other_vector):
+      if self.coord==other_vector.coord:
+        return True
+      return abs(self)>abs(other_vector)+self.tolerancia
+
+if __name__=="__main__":
+  a=Vector3D([3, 4, 5])
+  b=Vector3D([2, 4, 5])  
+  c=Vector3D([1,0,0])
+  d=Vector3D([0,0,0])   
+  e=Vector3D([1,0,0])
+  f=Vector3D([0.999999999999999999999999999999999999999999999999999999999999999999999999999999,0,0])
+  print(a>b)
+  print(a==e)
+  print(c==e)
+  print(d<a)
+  print(c==f)
+  print(c<=f)
+
+
 #Questão 3
 
 def ep_maquina():
@@ -8,7 +85,8 @@ def ep_maquina():
 
 ep_maquina()
 
-#Questão 4:
+#Questão 4: podemos observar que quando aumentamos os numero em um milhão o epsilon de máquina tambem aumenta em 10**6. Isso ocorre, pois quando aumentamos o 'número em certa proporção o epsilon máquina aumenta na mesma proporção
+#Isso pode gerar problemas, pois diminui a nossa precisão
 
 def ep_maquina(n):
   epsilon=1
@@ -17,3 +95,22 @@ def ep_maquina(n):
   return epsilon
 
 ep_maquina(10e6)
+
+#Questão 5
+#Para solucionar esse problema podemos criar uma classe que separe o número em milhões de quilômetros em vários números que somados resultam no original.Se tivermos 1,1 milhão de quilomêtros podemos serparar o numero em 1mi km e 100mil km
+#Separando até as unidades conseguimos realizar operações com os numeros pequenos, com alta precisão, e depois podemos juntar todos os números
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
